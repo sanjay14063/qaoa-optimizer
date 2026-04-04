@@ -1,22 +1,31 @@
 # Hybrid Optimizer Experiments (QAOA vs Classical)
 
 ## Overview
-This repo compares a classical optimizer against a QAOA-based simulator on a constrained scheduling problem. The goal is simple: see how solution quality and runtime behave as the problem scales.
+This project benchmarks a classical optimizer against a QAOA-based simulator on a constrained scheduling problem. The focus is straightforward: compare solution quality, stability, and runtime as problem size increases.
+
+---
+
+## How to Run
+
+```bash
+pip install -r requirements.txt
+python engine/plot_results.py
+```
 
 ---
 
 ## Results (Visual)
 
-![Runtime Scaling](runtime_scaling.png)
-![Solution Quality](energy_comparison.png)
-![QAOA Variance](qaoa_variance.png)
+![Runtime Scaling](results/plots/runtime_scaling.png)
+![Solution Quality](results/plots/energy_comparison.png)
+![QAOA Variance](results/plots/qaoa_variance.png)
 
 ---
 
 ## Problem Setup
-We assign tasks to slots with constraints, modeled as a QUBO (Quadratic Unconstrained Binary Optimization).
+Tasks are assigned to time slots under constraints, formulated as a QUBO (Quadratic Unconstrained Binary Optimization).
 
-Objective: minimize total cost while satisfying constraints.
+Objective: minimize total cost while respecting all constraints.
 
 ---
 
@@ -24,46 +33,65 @@ Objective: minimize total cost while satisfying constraints.
 
 **Classical solver**
 - Deterministic
-- Serves as the ground truth / baseline
+- Used as the ground truth baseline
 
 **QAOA simulator**
-- Parameterized circuit
-- Grid search + multiple restarts
+- Parameterized quantum circuit
+- Grid search with multiple restarts
 - Evaluated via expectation values
 
 ---
 
-## Results
+## Results Interpretation
 
 **Solution quality**
-- Classical hits the optimum every time
-- QAOA is consistently higher (worse)
-- Gap grows with problem size
+- Classical consistently reaches the optimum
+- QAOA produces higher-energy (worse) solutions
+- The gap increases with problem size
 
 **Stability**
-- QAOA variance is very low
-- It’s not random — it converges to the same (suboptimal) region
+- QAOA variance is low
+- Results are consistent but converge to suboptimal regions
 
 **Runtime scaling**
-- Classical grows gradually
-- QAOA blows up quickly and becomes impractical
+- Classical scales gradually
+- QAOA runtime increases rapidly and becomes impractical
 
 ---
 
 ## Conclusion
-In this setup, QAOA is:
-- Stable, but not optimal
-- Slower at scale
-- Limited by shallow depth + basic parameter search
+QAOA in this setup is:
+- Stable but not competitive in solution quality
+- Significantly slower as scale increases
+- Limited by shallow circuits and basic parameter search
 
-Takeaway: naive QAOA here doesn’t compete with classical methods.
+Overall: baseline QAOA does not outperform classical optimization here.
 
 ---
 
-## Files
-- `solver_comparison_results.csv` — small-scale comparisons
-- `scaling_results.csv` — scaling data
-- `plot_results.py` — plotting script
-- `runtime_scaling.png` — runtime plot
-- `energy_comparison.png` — solution quality plot
-- `qaoa_variance.png` — stability (error bars)
+## Future Work
+- Increase circuit depth (p)
+- Use more advanced optimizers (e.g. gradient-based methods)
+- Test under realistic noise models
+- Run on actual quantum hardware
+
+---
+
+## Project Structure
+
+```
+OPTIMIZER/
+├── engine/
+├── results/
+│   ├── plots/
+│   └── data/
+├── README.md
+├── requirements.txt
+├── .gitignore
+```
+
+---
+
+## Notes
+- Requires Python 3.x
+- Only external dependencies: pandas, matplotlib
