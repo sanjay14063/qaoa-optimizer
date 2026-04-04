@@ -5,6 +5,14 @@ This repo compares a classical optimizer against a QAOA-based simulator on a con
 
 ---
 
+## Results (Visual)
+
+![Runtime Scaling](runtime_scaling.png)
+![Solution Quality](energy_comparison.png)
+![QAOA Variance](qaoa_variance.png)
+
+---
+
 ## Problem Setup
 We assign tasks to slots with constraints, modeled as a QUBO (Quadratic Unconstrained Binary Optimization).
 
