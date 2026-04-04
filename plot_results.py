@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load data
-scaling = pd.read_csv("scaling_results.csv")
+scaling = pd.read_csv("results/data/scaling_results.csv")
 
 # Remove rows where QAOA failed
 scaling_qaoa = scaling.dropna(subset=["t_qaoa", "E_qaoa_mean"])
@@ -15,7 +15,7 @@ plt.xlabel("Number of variables")
 plt.ylabel("Time (seconds)")
 plt.title("Runtime Scaling")
 plt.legend()
-plt.savefig("runtime_scaling.png")
+plt.savefig("results/plots/runtime_scaling.png")
 
 # ---- Plot 2: Energy comparison ----
 plt.figure()
@@ -25,7 +25,7 @@ plt.xlabel("Number of variables")
 plt.ylabel("Energy")
 plt.title("Solution Quality")
 plt.legend()
-plt.savefig("energy_comparison.png")
+plt.savefig("results/plots/energy_comparison.png")
 
 # ---- Plot 3: QAOA error bars ----
 plt.figure()
@@ -40,4 +40,4 @@ plt.xlabel("Number of variables")
 plt.ylabel("Energy")
 plt.title("QAOA Stability (Error Bars)")
 plt.legend()
-plt.savefig("qaoa_variance.png")
+plt.savefig("results/plots/qaoa_variance.png")
