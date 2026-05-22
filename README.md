@@ -7,15 +7,26 @@ A small set of controlled experiments was run, with results exported to CSV and 
 
 ---
 
+## Paper
+
+[Read the full paper (PDF)](docs/hybrid_optimizer_paper.pdf)
+
+---
+
 ## Key Results
 
+### Runtime Scaling
 ![Runtime Scaling](results/plots/runtime_scaling.png)
+
+### Solution Quality
 ![Solution Quality](results/plots/energy_comparison.png)
+
+### QAOA Variance
 ![QAOA Variance](results/plots/qaoa_variance.png)
 
 **Summary:**
 - Classical optimization consistently finds optimal solutions.
-- QAOA produces near-optimal but often worse solutions.
+- QAOA produces competitive but generally less reliable solutions.
 - QAOA runtime scales exponentially due to statevector simulation.
 
 ---
@@ -47,7 +58,7 @@ Objective: minimize total cost while satisfying all constraints.
 ---
 
 ## Experimental Setup
-- Problem sizes range from small (n = 4) to larger instances (n ≈ 20)
+- Problem sizes range from small benchmark instances (n = 4) to larger cases approaching n ≈ 20 for QAOA simulation
 - Metrics recorded:
   - Solution energy
   - Runtime
@@ -68,7 +79,7 @@ Objective: minimize total cost while satisfying all constraints.
 
 **Runtime Scaling**
 - Classical runtime grows gradually
-- QAOA runtime grows exponentially and becomes impractical beyond n ≈ 18–20
+- QAOA runtime grows exponentially due to full statevector simulation and becomes impractical beyond n ≈ 18–20
 
 ---
 
@@ -99,7 +110,7 @@ OPTIMIZER/
 │   └── data/               # CSV outputs
 ├── docs/
 │   ├── hybrid_optimizer_paper.md   # editable paper draft
-│   └── hybrid_optimizer_paper.pdf  # final paper 
+│   └── hybrid_optimizer_paper.pdf  # PDF version of paper
 ├── README.md
 ├── requirements.txt
 ```
