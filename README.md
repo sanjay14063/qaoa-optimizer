@@ -1,79 +1,91 @@
 # Hybrid Optimizer Experiments (QAOA vs Classical)
 
 ## Overview
-This project benchmarks a classical optimizer against a QAOA-based simulator on a constrained scheduling problem. The focus is straightforward: compare solution quality, stability, and runtime as problem size increases.
+This project benchmarks a classical optimization method against a quantum-inspired QAOA simulator on a constrained scheduling problem. The goal is to compare solution quality, stability, and runtime as the problem size increases.
+
+A small set of controlled experiments was run, with results exported to CSV and visualized using plots included below.
 
 ---
 
-## How to Run
-
-```bash
-pip install -r requirements.txt
-python engine/plot_results.py
-```
-
----
-
-## Results (Visual)
+## Key Results
 
 ![Runtime Scaling](results/plots/runtime_scaling.png)
 ![Solution Quality](results/plots/energy_comparison.png)
 ![QAOA Variance](results/plots/qaoa_variance.png)
 
----
-
-## Problem Setup
-Tasks are assigned to time slots under constraints, formulated as a QUBO (Quadratic Unconstrained Binary Optimization).
-
-Objective: minimize total cost while respecting all constraints.
+**Summary:**
+- Classical optimization consistently finds optimal solutions.
+- QAOA produces near-optimal but often worse solutions.
+- QAOA runtime scales exponentially due to statevector simulation.
 
 ---
 
-## Approach
+## Problem Formulation
+The task scheduling problem is encoded as a QUBO (Quadratic Unconstrained Binary Optimization):
 
-**Classical solver**
-- Deterministic
-- Used as the ground truth baseline
+- Each task must be assigned to exactly one time slot.
+- Each assignment has an associated cost.
+- Constraints are enforced through the QUBO formulation.
 
-**QAOA simulator**
-- Parameterized quantum circuit
-- Grid search with multiple restarts
-- Evaluated via expectation values
+Objective: minimize total cost while satisfying all constraints.
 
 ---
 
-## Results Interpretation
+## Methods
 
-**Solution quality**
-- Classical consistently reaches the optimum
-- QAOA produces higher-energy (worse) solutions
-- The gap increases with problem size
+### Classical Solver
+- Simulated annealing
+- Run multiple times per instance (best result selected)
+- Serves as a baseline for performance and accuracy
+
+### QAOA Simulator
+- Classical simulation of a single-layer (p=1) QAOA circuit
+- Grid search over parameters (γ, β)
+- Evaluated using expectation values
+- Limited to small problem sizes due to 2^n scaling
+
+---
+
+## Experimental Setup
+- Problem sizes range from small (n = 4) to larger instances (n ≈ 20)
+- Metrics recorded:
+  - Solution energy
+  - Runtime
+  - Optimality gap (when ground truth is available)
+- Results exported to `results/data/` as CSV files
+
+---
+
+## Interpretation
+
+**Solution Quality**
+- Classical solver consistently achieves optimal solutions
+- QAOA results degrade slightly as problem size increases
 
 **Stability**
 - QAOA variance is low
-- Results are consistent but converge to suboptimal regions
+- Results are consistent but not always optimal
 
-**Runtime scaling**
-- Classical scales gradually
-- QAOA runtime increases rapidly and becomes impractical
+**Runtime Scaling**
+- Classical runtime grows gradually
+- QAOA runtime grows exponentially and becomes impractical beyond n ≈ 18–20
 
 ---
 
 ## Conclusion
-QAOA in this setup is:
-- Stable but not competitive in solution quality
-- Significantly slower as scale increases
-- Limited by shallow circuits and basic parameter search
+In this setup, QAOA does not outperform classical optimization:
 
-Overall: baseline QAOA does not outperform classical optimization here.
+- Classical methods are faster and more reliable
+- QAOA is limited by simulation constraints
+- Useful primarily as a conceptual or research tool at small scales
 
 ---
 
 ## Future Work
-- Increase circuit depth (p)
-- Use more advanced optimizers (e.g. gradient-based methods)
-- Test under realistic noise models
-- Run on actual quantum hardware
+- Increase QAOA circuit depth (p > 1)
+- Replace grid search with gradient-based optimization
+- Incorporate noise models
+- Test on real quantum hardware
 
 ---
 
@@ -81,17 +93,20 @@ Overall: baseline QAOA does not outperform classical optimization here.
 
 ```
 OPTIMIZER/
-├── engine/
+├── engine/                 # core implementation
 ├── results/
-│   ├── plots/
-│   └── data/
+│   ├── plots/              # generated figures
+│   └── data/               # CSV outputs
+├── docs/
+│   ├── hybrid_optimizer_paper.md   # editable paper draft
+│   └── hybrid_optimizer_paper.pdf  # final paper 
 ├── README.md
 ├── requirements.txt
-├── .gitignore
 ```
 
 ---
 
 ## Notes
-- Requires Python 3.x
-- Only external dependencies: pandas, matplotlib
+- Python 3.x required
+- Dependencies: pandas, matplotlib
+- All experiments are reproducible via provided scripts
